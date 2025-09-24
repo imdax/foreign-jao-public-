@@ -68,7 +68,7 @@ const LoginPage = () => {
       <div className="w-full md:w-1/2 flex flex-col bg-white">
         {/* Top - Logo */}
         <div className="p-6 md:p-10">
-          <h1 className="text-purple-700 font-bold text-lg">FOREIGN JAO</h1>
+          <h1 className="text-purple-700 font-bold text-lg">FOREIGN JAOO</h1>
         </div>
         <div className="flex-1 flex items-center justify-center px-6 md:px-16">
           <div className="max-w-md w-full mx-auto">

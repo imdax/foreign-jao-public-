@@ -132,17 +132,6 @@ const RegisterPage = () => {
               >
                 Get started
               </button>
-              <button
-                type="button"
-                className="w-full flex items-center justify-center border border-gray-300 rounded-lg py-2 mt-2 font-semibold text-gray-700 bg-white hover:bg-gray-50 transition"
-              >
-                <img
-                  src="/assets/google-icon.png" // ✅ fixed
-                  alt="Google"
-                  className="w-5 h-5 mr-2"
-                />
-                Sign up with Google
-              </button>
             </form>
             <div className="text-center text-sm text-gray-500 mt-6">
               Already have an account?{" "}
