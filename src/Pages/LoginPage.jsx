@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import API_BASE from "../config";
+
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // 👈 toggle state
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -36,7 +38,6 @@ const LoginPage = () => {
         throw new Error(msg);
       }
 
-      // 🔑 extract user id
       const userId =
         data?.user?._id ||
         data?.user?.id ||
@@ -48,12 +49,10 @@ const LoginPage = () => {
         throw new Error("Login succeeded but no user id was returned.");
       }
 
-      // ✅ Save IDs consistently
-      localStorage.setItem("studentID", userId); // required by TestDetailPage
-      localStorage.setItem("userId", userId); // compatibility
+      localStorage.setItem("studentID", userId);
+      localStorage.setItem("userId", userId);
       if (data?.token) localStorage.setItem("token", data.token);
 
-      // ✅ Redirect
       navigate("/dashboard");
     } catch (err) {
       setError(err.message || "Something went wrong. Try again later.");
@@ -66,7 +65,6 @@ const LoginPage = () => {
     <div className="flex h-screen w-screen overflow-hidden fixed top-0 left-0">
       {/* Left Section */}
       <div className="w-full md:w-1/2 flex flex-col bg-white">
-        {/* Top - Logo */}
         <div className="p-6 md:p-10">
           <h1 className="text-purple-700 font-bold text-lg">FOREIGN JAOO</h1>
         </div>
@@ -78,6 +76,7 @@ const LoginPage = () => {
             </p>
 
             <form className="space-y-4" onSubmit={handleSubmit}>
+              {/* Email */}
               <div>
                 <label className="block text-sm font-medium mb-1">Email</label>
                 <input
@@ -90,21 +89,36 @@ const LoginPage = () => {
                 />
               </div>
 
+              {/* Password with Eye Button */}
               <div>
                 <label className="block text-sm font-medium mb-1">
                   Password
                 </label>
-                <input
-                  type="password"
-                  placeholder="******"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="******"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-purple-600"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
                 {error && <p className="text-red-600 text-xs mt-1">{error}</p>}
               </div>
 
+              {/* Remember + Forgot */}
               <div className="flex items-center justify-between">
                 <label className="flex items-center text-sm">
                   <input type="checkbox" className="mr-2 rounded" /> Remember Me
@@ -114,6 +128,7 @@ const LoginPage = () => {
                 </a>
               </div>
 
+              {/* Submit */}
               <button
                 type="submit"
                 disabled={loading}
@@ -139,9 +154,8 @@ const LoginPage = () => {
         </div>
       </div>
 
-      {/* Right Side - Testimonial */}
+      {/* Right Side */}
       <div className="hidden md:flex w-1/2 relative items-stretch bg-gray-100">
-        {/* ✅ Fixed Login Image Path */}
         <img
           src="/assets/Login.png"
           alt="Testimonial"
